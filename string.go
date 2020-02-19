@@ -15,6 +15,7 @@ import (
 	"math/rand"
 	"strings"
 	"time"
+	"unicode"
 	"unicode/utf8"
 )
 
@@ -39,12 +40,12 @@ func TrimFormatStr(str string) string {
 }
 
 // 返回字符串中的字符数量
-func LenRune(str string) int  {
-	return  len([]rune(str))
+func LenRune(str string) int {
+	return len([]rune(str))
 }
 
 // MD5 加密
-func MD5Encrypt(str string) string  {
+func MD5Encrypt(str string) string {
 	return fmt.Sprintf("%x", md5.Sum([]byte(str)))
 }
 
@@ -53,7 +54,6 @@ func NewPasswdFormStr(passwd string) string {
 	en, _ := bcrypt.GenerateFromPassword([]byte(passwd), bcrypt.DefaultCost)
 	return base64.StdEncoding.EncodeToString(en)
 }
-
 
 //ComparePasswd 密码比较
 func ComparePasswd(passwd, encodingPwd string) bool {
@@ -73,3 +73,15 @@ func CreateSMSCode() string {
 	return fmt.Sprintf("%06v", rand.New(rand.NewSource(time.Now().UnixNano())).Int31n(1000000))
 }
 
+//首字母小写
+func FirstCharToLower(str string) string {
+	var n []rune
+	for i, ch := range str {
+		if i == 0 {
+			n = append(n, unicode.ToLower(ch))
+		} else {
+			n = append(n, ch)
+		}
+	}
+	return string(n)
+}
